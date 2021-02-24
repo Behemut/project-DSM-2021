@@ -1,43 +1,57 @@
 /* eslint-disable prettier/prettier */
-import React from 'react'
-import { View, Text, SafeAreaView, StyleSheet} from 'react-native'
+import React from 'react';
+import {FlatList, StyleSheet} from 'react-native';
+
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
 
-import {Loading} from '../components/Loading';
 import { UserContext } from '../contexts/UserContext';
+import {NewsComponent} from '../components/NewsComponent';
+import {useGet} from '../hooks/useGet';
+import {HeaderIconsContainer} from '../components/HeaderIconContainer';
+import {ThemeContext} from '../contexts/ThemeContext';
 
+export function News({navigation}) {
+  const {logout} = React.useContext(AuthContext);
+  const user = React.useContext(UserContext);
+  const switchTheme = React.useContext(ThemeContext);
+  
 
-
-export  function News({navigation}) {
-const {user} = React.useContext(UserContext);
-const {logout} = React.useContext(AuthContext);
-
-React.useEffect( ()=>{
+  React.useLayoutEffect(() => {
     navigation.setOptions({
-        headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{
-
-           await logout()}}/>,
+      headerRight: () => (
+        <HeaderIconsContainer>
+          
+          <HeaderIconButton
+            name={'log-out'}
+            onPress={() => {
+              logout();
+            }}
+          />
+        </HeaderIconsContainer>
+      ),
     });
-}, [navigation, logout] );
+  }, [navigation, logout]);
 
+  const const_noticias = user.consultas;
 
-    return (
-        
-        <SafeAreaView style={styles.container}>
-            <Text>BIENVENIDO A NEWS</Text>
-            <Text>Bienvenido {user.username}  y eres un {user.rol}</Text>
-    
- 
-        </SafeAreaView>
-    )
+  function renderProduct({item: noticias}) {
+    return <NewsComponent news={noticias} />;
+  }
+
+  return (
+    <FlatList
+      contentContainerStyle={styles.productsListContainer}
+      data={const_noticias}
+      renderItem={renderProduct}
+      keyExtractor={noticias => `${noticias.id}`}
+    />
+  );
 }
+
 const styles = StyleSheet.create({
-    container:{
-        flex:1 ,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
-
-
+  productsListContainer: {
+    paddingVertical: 8,
+    marginHorizontal: 8,
+  },
+});

@@ -3,14 +3,15 @@ import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet} from 'react-native'
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
-
+import {useTheme} from '@react-navigation/native';
 import {Loading} from '../components/Loading';
 import { UserContext } from '../contexts/UserContext';
 
 
 
 export  function Doctor({navigation}) {
-const {user} = React.useContext(UserContext);
+    const {colors} = useTheme();
+const user = React.useContext(UserContext);
 const {logout} = React.useContext(AuthContext);
 
 React.useEffect( ()=>{
@@ -21,12 +22,16 @@ React.useEffect( ()=>{
     });
 }, [navigation, logout] );
 
+React.useEffect(  ()=>{
+
+})
+
 
     return (
         
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, {backgroundColor: colors.primary}]}>
             <Text>BIENVENIDO A DOCTORES</Text>
-            <Text>Bienvenido {user.username}  y eres un {user.rol}</Text>
+    
     
  
         </SafeAreaView>

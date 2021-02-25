@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {DarkTheme} from '@react-navigation/native';
 
 export const darkTheme = {

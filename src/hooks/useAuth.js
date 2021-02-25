@@ -41,6 +41,7 @@ const [state, dispach] =React.useReducer( (state,action)=>{
    
 
      const user ={
+       id: data.user.id,
        email: data.user.email,
        rol: data.user.rol,
        username: data.user.username,

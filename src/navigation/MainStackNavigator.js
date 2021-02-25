@@ -20,7 +20,7 @@ export function MainStackNavigator({navigation}) {
       else 
            return (
              <MainStack.Navigator >
-               <MainStack.Screen name={'news'} component={News} />
+               <MainStack.Screen name={'doctor'} component={Doctor} />
              </MainStack.Navigator>
          
            );

@@ -17,6 +17,9 @@ export function News({navigation}) {
   const switchTheme = React.useContext(ThemeContext);
   
 
+    const fomrData = new FormData();
+
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -34,7 +37,7 @@ export function News({navigation}) {
   }, [navigation, logout]);
 
   const const_noticias = user.consultas;
-
+  //  const const_noticias =  useGet('/noticias');
   function renderProduct({item: noticias}) {
     return <NewsComponent news={noticias} />;
   }

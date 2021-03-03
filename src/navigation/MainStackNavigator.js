@@ -17,10 +17,10 @@ export function MainStackNavigator({navigation}) {
                <MainStack.Screen name={'doctor'} component={Doctor} />
              </MainStack.Navigator>
            )
-      else 
+           if (user.rol == 'paciente')
            return (
              <MainStack.Navigator >
-               <MainStack.Screen name={'doctor'} component={Doctor} />
+               <MainStack.Screen name={'news'} component={News} />
              </MainStack.Navigator>
          
            );

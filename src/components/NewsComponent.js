@@ -8,10 +8,7 @@ import {Card} from './Card';
 export function NewsComponent({news, onPress}) {
   return (
     <Card style={styles.card} onPress={onPress}>
-  <Image
-  style={styles.thumb}
-  source={{uri: BASE_URL + news.Images.url}}
-/>
+
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{news.title}</Text>
         <Text style={styles.price}>{news.enlaces}</Text>
@@ -36,6 +33,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: 'bold',
+    color: 'red',
   },
   price: {
     fontSize: 16,

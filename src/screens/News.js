@@ -17,8 +17,6 @@ export function News({navigation}) {
   const switchTheme = React.useContext(ThemeContext);
   
 
-    const fomrData = new FormData();
-
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

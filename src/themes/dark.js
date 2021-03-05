@@ -5,9 +5,9 @@ export const darkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    background: '#323436',
-    primary: 'orange',
-    text: 'orange',
+    background: '#111212',
+    primary: '#3dd28e',
+    text: '#3dd28e',
     
   },
 };

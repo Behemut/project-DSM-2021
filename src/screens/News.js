@@ -34,8 +34,8 @@ export function News({navigation}) {
     });
   }, [navigation, logout]);
 
-  const const_noticias = user.consultas;
-  //  const const_noticias =  useGet('/noticias');
+
+  const const_noticias =  useGet(`/noticias?usuario=${user.id}`);
   function renderProduct({item: noticias}) {
     return <NewsComponent news={noticias} />;
   }

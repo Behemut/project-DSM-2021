@@ -40,7 +40,7 @@ return(
       />
 
 <FilledButton
-        title={'Login'}
+        title={'Iniciar sesión'}
         style={styles.loginButton}
         onPress={async()=>{
           try {

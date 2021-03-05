@@ -11,13 +11,13 @@ export function MainStackNavigator({navigation}) {
 
         const user = React.useContext(UserContext);
   
-        if (user.rol == 'doctor')
+        if (user.rol == 'Doctor')
         return (
              <MainStack.Navigator >
                <MainStack.Screen name={'doctor'} component={Doctor} />
              </MainStack.Navigator>
            )
-           if (user.rol == 'paciente')
+           if (user.rol == 'Paciente')
            return (
              <MainStack.Navigator >
                <MainStack.Screen name={'news'} component={News} />

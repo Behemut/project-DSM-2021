@@ -7,6 +7,7 @@ import axios from 'axios';
 import SecureStorage from 'react-native-secure-storage'
  
 export function useAuth(){
+const [avatarform, setAvatarform] = React.useState(null);
 const [state, dispach] =React.useReducer( (state,action)=>{
     switch (action.type){
         case 'SET_USER':
@@ -46,7 +47,6 @@ const [state, dispach] =React.useReducer( (state,action)=>{
        email: data.user.email,
        rol: data.user.rol,
        username: data.user.username,
-       consultas: data.user.noticias,
        token: data.jwt ,
      };
    
@@ -54,20 +54,41 @@ const [state, dispach] =React.useReducer( (state,action)=>{
      dispach(createAction( 'SET_USER',user));
    },
    logout : async () =>{
-       await SecureStorage.removeItem('user');
+   await SecureStorage.removeItem('user');
    await  dispach (createAction( 'REMOVE_USER'));
-
    },
-   register :  async (email, password) =>{
-  await sleep(1500);
-   await axios.post(`${BASE_URL}/auth/local/register`, {
-      username: email,
-      email,
-      rol: 'doctor',
-      password: password,
-    });
-  }
- }),  [], );
+   register :  async (email, password,rol,file) =>{
+    const data = new FormData();
+    const avatar = new FormData();
+    await sleep(1500);
+     data.append('username', email);
+     data.append('email', email);
+     data.append('rol',rol);
+     data.append('password',password);
+     const response = await axios({
+  method: 'post',
+  url: `${BASE_URL}/auth/local/register`,
+  data: data,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    },
+});
+const usuario = {
+  'usuario': response.data.user.id,
+}
+avatar.append('data', JSON.stringify(usuario));
+avatar.append('files.profilepic', {
+    uri: file.uri,
+    name: file.fileName,
+    type: 'image/jpeg',
+});
+  await axios.post(`${BASE_URL}/avatars`, avatar, {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+    },
+   }),  [], );
 
 
  React.useEffect(() => {

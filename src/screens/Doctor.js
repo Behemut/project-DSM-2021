@@ -16,11 +16,9 @@ import FormData from 'form-data';
 export  function Doctor({navigation}) {
     const user = React.useContext(UserContext);
     const [formDatos, setFormDatos] = useState(null);
-    const [identidad, setIdentidad] = useState(null);
     const [files, setFiles] = useState(null);
     const {colors} = useTheme();
     const {logout} = React.useContext(AuthContext);
-    const[resourcePath, setResourcePath] = useState(null);
 
 
 
@@ -55,7 +53,7 @@ const imageGalleryLaunch = () => {
         alert(res.customButton);
       } else {
         
-      setResourcePath(res );
+      setFiles(res );
       }
     });
   }  
@@ -66,20 +64,14 @@ const onSubmit = async () => {
 
     data.append('data', JSON.stringify(formDatos));
     data.append('files.Images', {
-        uri: resourcePath.uri,
-        name: resourcePath.fileName,
+        uri: files.uri,
+        name: files.fileName,
         type: 'image/jpeg',       
     });
     const token = user.token;
- /*   let  imageResponse = await axios.post(`${BASE_URL}/upload`, data, {
-        headers: {
-            'Content-Type': 'multipart/form-data;',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-*/
     let  formularioResponse = await axios.post(`${BASE_URL}/noticias`, data, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -95,7 +87,7 @@ const onSubmit = async () => {
               <Text style={styles.buttonText}>Select File</Text>
             </TouchableOpacity> 
 
-            <Button title="Extraer datos" onPress={ ()=>{ console.log(formDatos)} } />
+            <Button title="Extraer datos" onPress={ ()=>{console.log(JSON.stringify('usuario','contrasñea','rol'))} } />
             <Button title="Subir imagen" onPress={ ()=> onSubmit()} />
         </SafeAreaView>
     )

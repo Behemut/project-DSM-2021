@@ -6,11 +6,12 @@ import {AuthContext} from '../contexts/AuthContext';
 import {useTheme} from '@react-navigation/native';
 import {Loading} from '../components/Loading';
 import { UserContext } from '../contexts/UserContext';
-import axios from "axios"
 import { Input } from '../components/Input';
 import {BASE_URL} from '../config/';
 import * as ImagePicker from "react-native-image-picker"
 import FormData from 'form-data';
+import {usePost} from '../hooks/usePost';
+
 
 
 export  function Doctor({navigation}) {
@@ -21,12 +22,11 @@ export  function Doctor({navigation}) {
     const {logout} = React.useContext(AuthContext);
 
 
-
 React.useEffect( ()=>{
     navigation.setOptions({
-        headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{
-
-           await logout()}}/>,
+        headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout()}}/>,
+        headerLeft: () => <HeaderIconButton name={'menu'} onPress={()=>{navigation.openDrawer()}} />,
+      
     });
 }, [navigation, logout] );
 
@@ -53,12 +53,14 @@ const imageGalleryLaunch = () => {
         alert(res.customButton);
       } else {
         
-      setFiles(res );
+      setFiles(res);
+
+      console.log(res);
       }
     });
   }  
 
-const onSubmit = async () => { 
+const onSubmit =  () => { 
   const data = new FormData();
 
 
@@ -66,16 +68,11 @@ const onSubmit = async () => {
     data.append('files.Images', {
         uri: files.uri,
         name: files.fileName,
-        type: 'image/jpeg',       
+        type: files.type,
     });
-    const token = user.token;
-    let  formularioResponse = await axios.post(`${BASE_URL}/noticias`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(formularioResponse.data);
+      
+      //const  formularioResponse = usePost(`${BASE_URL}/noticias`,data,);
+     // console.log(formularioResponse.data);
     }
 
     return (

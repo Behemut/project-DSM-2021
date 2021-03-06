@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React from 'react'
-import {StyleSheet} from 'react-native';
+import React from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import {Heading}  from '../components/Heading';
 import { Input}  from '../components/Input';
 import { FilledButton}  from '../components/FilledButton';
@@ -9,21 +9,19 @@ import {IconButton } from '../components/IconButton';
 import {AuthContainer} from '../components/AuthContainer';
 import { AuthContext } from '../contexts/AuthContext';
 import {Loading} from '../components/Loading';
-import Toast from 'react-native-toast-message';
-import * as ImagePicker from "react-native-image-picker"
-import FormData from 'form-data';
+import * as ImagePicker from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
 
 export function Register({navigation}){
  
   const {register} = React.useContext(AuthContext);
+  const [nombre, setNombre] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [rol, setRol] = React.useState(null);
   const [files, setFiles] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
-  const data = new FormData();
 
   const imageGalleryLaunch = () => {
     let options = {
@@ -32,24 +30,22 @@ export function Register({navigation}){
         path: 'images',
       },
     };
-    ImagePicker.launchCamera(options, (res) => {
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-        alert(res.customButton);
-      } else { 
-      setFiles(res );
-      }
+    ImagePicker.launchImageLibrary(options, (res) => {
+      setFiles(res);
     });
-  }  
-return(
+  }
+
+  return(
+  <ScrollView>
   <AuthContainer>
   <IconButton name={'close-circle-outline'} style={styles.closeIcon} onPress={() => {navigation.pop();}}  />
   <Heading style={styles.title}>REGISTRAR USUARIO</Heading>
-   <Error error={error} /> 
+   <Error error={error} />
+   <Input
+        style={styles.input}
+        placeholder={'Nombre completo'}
+        onChangeText={setNombre}
+      />
    <Input
         style={styles.input}
         placeholder={'Email'}
@@ -73,7 +69,6 @@ return(
                 { label: 'Doctor', value: 'Doctor' },
                 { label: 'Paciente', value: 'Paciente' },
             ]}
-
         />
 
 <FilledButton
@@ -86,7 +81,7 @@ return(
         onPress={async()=>{
          try {
          setLoading(true);
-          await register(email,password, rol, files);
+          await register(nombre,email,password, rol, files);
          navigation.pop();
          } catch (error) {
           setLoading(false);
@@ -95,6 +90,7 @@ return(
         }}/>
       <Loading loading={loading} />
 </AuthContainer>
+</ScrollView>
         );
 }
 

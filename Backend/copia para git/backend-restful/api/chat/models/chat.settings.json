@@ -14,9 +14,9 @@
       "type": "text"
     },
     "usuario": {
+      "via": "chats",
       "plugin": "users-permissions",
       "collection": "user",
-      "via": "chats",
       "dominant": true
     }
   }

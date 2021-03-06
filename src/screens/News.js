@@ -7,7 +7,7 @@ import {AuthContext} from '../contexts/AuthContext';
 
 import { UserContext } from '../contexts/UserContext';
 import {NewsComponent} from '../components/NewsComponent';
-import {useGet} from '../hooks/useGet';
+import {useGet} from '../hooks/userPetitions';
 import {HeaderIconsContainer} from '../components/HeaderIconContainer';
 import {ThemeContext} from '../contexts/ThemeContext';
 

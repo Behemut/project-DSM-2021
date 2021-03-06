@@ -7,7 +7,7 @@ export function IconButton({name, style, onPress}) {
   const {colors} = useTheme();
   return (
     <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-      <Icon name={name} color={colors.primary} />
+      <Icon style={style}  name={name} color={colors.primary} />
     </TouchableOpacity>
   );
 }

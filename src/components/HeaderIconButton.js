@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
@@ -10,5 +11,6 @@ export function HeaderIconButton({name, onPress}) {
 const styles = StyleSheet.create({
   container: {
     marginRight: 16,
+    marginLeft: 16,
   },
 });

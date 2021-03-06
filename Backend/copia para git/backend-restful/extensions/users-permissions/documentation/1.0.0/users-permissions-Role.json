@@ -570,6 +570,9 @@
                     "type": "string"
                   }
                 },
+                "Nombre": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },

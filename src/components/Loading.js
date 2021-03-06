@@ -11,7 +11,7 @@ export function Loading({loading}) {
     <View style={styles.overlay}>
       <View style={styles.container}>
         <ActivityIndicator color={'black'} />
-        <Text style={styles.text}>Loading...</Text>
+        <Text style={styles.text}>Cargando...</Text>
       </View>
     </View>
   );

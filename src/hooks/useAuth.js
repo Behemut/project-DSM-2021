@@ -40,8 +40,6 @@ const [state, dispach] =React.useReducer( (state,action)=>{
        identifier: email, password,
      });
    
-  
-
      const user ={
        id: data.user.id,
        email: data.user.email,
@@ -57,13 +55,15 @@ const [state, dispach] =React.useReducer( (state,action)=>{
    await SecureStorage.removeItem('user');
    await  dispach (createAction( 'REMOVE_USER'));
    },
-   register :  async (email, password,rol,file) =>{
+   register :  async (nombre,email, password,rol,file) =>{
     const data = new FormData();
     const avatar = new FormData();
     await sleep(1500);
+    data.append('Nombre', nombre);
      data.append('username', email);
      data.append('email', email);
      data.append('rol',rol);
+     data.append('confirmed', 'false');
      data.append('password',password);
      const response = await axios({
   method: 'post',

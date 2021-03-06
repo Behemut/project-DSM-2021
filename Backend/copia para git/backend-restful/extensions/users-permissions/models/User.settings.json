@@ -63,8 +63,11 @@
       "type": "string"
     },
     "chats": {
-      "via": "usuario",
-      "collection": "chat"
+      "collection": "chat",
+      "via": "usuario"
+    },
+    "Nombre": {
+      "type": "string"
     }
   }
 }

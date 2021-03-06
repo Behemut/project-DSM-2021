@@ -12,7 +12,10 @@ export function NewsComponent({news, onPress}) {
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{news.title}</Text>
         <Text style={styles.price}>{news.enlaces}</Text>
-    
+        <Image
+        style={styles.thumb}
+        source={{uri: `${BASE_URL}${news.Images.url}`}}
+      />
       </View>
     </Card>
   );

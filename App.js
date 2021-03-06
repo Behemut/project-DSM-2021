@@ -9,6 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AuthStackNavigator} from './src/navigation/AuthStackNavigator';
 import {MainStackNavigator} from './src/navigation/MainStackNavigator';
+import {MainDrawerNavigator} from './src/navigation/MainDrawNavigator';
 import {darkTheme} from './src/themes/dark';
 import {lightTheme} from './src/themes/light';
 import {AuthContext} from './src/contexts/AuthContext';
@@ -28,10 +29,10 @@ export default function App(){
       return <RootStack.Screen name={'Splash'} component={SplashScreen} />;
     }
     return (state.user ? (
-      <RootStack.Screen name={'MainStack'}>
+      <RootStack.Screen name={'Main'}>
         {() => (
           <UserContext.Provider value={state.user}>
-            <MainStackNavigator />
+            <MainDrawerNavigator />
           </UserContext.Provider>
         )}
       </RootStack.Screen>
@@ -41,8 +42,8 @@ export default function App(){
   }
 return(
 <AuthContext.Provider value={auth}>
-<StatusBar barStyle={'light-content'} translucent={true} backgroundColor={'transparent'} />
-  <NavigationContainer theme={darkTheme}>
+<StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
+  <NavigationContainer theme={lightTheme}>
     <RootStack.Navigator  screenOptions={{headerShown: false}}>
     {renderScreens()}
     </RootStack.Navigator>

@@ -5,6 +5,7 @@ import {sleep} from '../utils/sleep';
 import {createAction} from '../utils/createAction';
 import axios from 'axios';
 import SecureStorage from 'react-native-secure-storage'
+import { ActionSheetIOS } from 'react-native';
  
 export function useAuth(){
 const [avatarform, setAvatarform] = React.useState(null);
@@ -15,12 +16,12 @@ const [state, dispach] =React.useReducer( (state,action)=>{
             ...state,
             loading:false,
             user: {...action.payload},
-          }
+          };
         case 'REMOVE_USER':
             return{
               ...state,
               user: undefined,
-            }
+            };
             case 'SET_LOADING':
                 return {
                   ...state,
@@ -29,17 +30,16 @@ const [state, dispach] =React.useReducer( (state,action)=>{
               default:
                 return state;
     }
- }, {user: undefined,loading:  true,});
+ }, {user: undefined,loading:  true});
 
+ const auth = React.useMemo( ()=> ({
 
   
- const auth = React.useMemo( ()=> ({
    login: async (email, password) =>{
     await sleep(1500);
   const {data} =  await axios.post(`${BASE_URL}/auth/local`, {
        identifier: email, password,
-     });
-   
+     });  
      const user ={
        id: data.user.id,
        email: data.user.email,
@@ -47,11 +47,34 @@ const [state, dispach] =React.useReducer( (state,action)=>{
        username: data.user.username,
        token: data.jwt ,
      };
-   
+     const inicio= new FormData();
+     inicio.append('estado', JSON.stringify(true));
+     await axios({
+    method: 'PUT',
+    url: `${BASE_URL}/users/${user.id}`,
+  data: inicio,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${user.token}`,
+    },
+});
+
      await SecureStorage.setItem('user', JSON.stringify(user));
      dispach(createAction( 'SET_USER',user));
    },
-   logout : async () =>{
+   logout : async (id,token) =>{
+
+    const estado= new FormData();
+    estado.append('estado', JSON.stringify(false));
+    await axios({
+   method: 'PUT',
+   url: `${BASE_URL}/users/${id}`,
+ data: estado,
+ headers: {
+   'Content-Type': 'multipart/form-data',
+   Authorization: `Bearer ${token}`,
+   },
+});
    await SecureStorage.removeItem('user');
    await  dispach (createAction( 'REMOVE_USER'));
    },
@@ -75,7 +98,7 @@ const [state, dispach] =React.useReducer( (state,action)=>{
 });
 const usuario = {
   'usuario': response.data.user.id,
-}
+};
 avatar.append('data', JSON.stringify(usuario));
 avatar.append('files.profilepic', {
     uri: file.uri,
@@ -84,11 +107,11 @@ avatar.append('files.profilepic', {
 });
   await axios.post(`${BASE_URL}/avatars`, avatar, {
   headers: {
-    "Content-Type": "multipart/form-data",
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${response.data.jwt}`,
   },
 });
-    },
-   }),  [], );
+}}), [], );
 
 
  React.useEffect(() => {

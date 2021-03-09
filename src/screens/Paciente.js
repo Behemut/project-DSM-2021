@@ -11,11 +11,11 @@ export default function Pacientes({navigation}) {
 
     React.useEffect( ()=>{
         navigation.setOptions({
-            headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout()}}/>,
+            headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout(user.id, user.token)}}/>,
             headerLeft: () => <HeaderIconButton name={'menu'} onPress={()=>{navigation.openDrawer()}} />,
           
         });
-    }, [navigation, logout] );
+    }, [navigation, logout, user.id, user.token] );
     return (
         <View>
             <Text>BIENVENIDO A CREAR CONSULTAS (DOCTOR)</Text>

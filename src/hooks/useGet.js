@@ -1,13 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useCallback } from 'react';
 import axios from 'axios';
 
 import {UserContext} from '../contexts/UserContext';
 import {BASE_URL} from '../config';
 
-export function useGet(endpoint, initialValue = []) {
+export function useGet (endpoint, initialValue = []){
   const {token} = React.useContext(UserContext);
-  
   const [data, setData] = React.useState(initialValue);
   React.useEffect(() => {
     axios

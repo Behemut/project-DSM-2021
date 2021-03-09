@@ -12,15 +12,13 @@ import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
 import {Text} from 'react-native'
 import Perfil from '../screens/Perfil';
+import {ChatStackNavigator}  from './ChatStackNavigator';
 
 
 const Drawer = createDrawerNavigator();
 
 export function MainDrawerNavigator({navigation}){
     const {logout} = React.useContext(AuthContext);
-
-  
-
     const user = React.useContext(UserContext);
     if (user.rol == 'Doctor')
     return(
@@ -28,15 +26,16 @@ export function MainDrawerNavigator({navigation}){
         <Drawer.Screen name={'doctor'} component={Doctor}    options={{ title: 'Inicio' }}/>
         <Drawer.Screen  name={'crear'} component={CrearConsultas}   options={{ title: 'Crear consulta' }}/>
         <Drawer.Screen  name="perfil" component={Perfil}   options={{ title: 'Perfil de usuario' }}/>
+        <Drawer.Screen  name="chat" component={ChatStackNavigator}   options={{ title: 'Chat' }}/>
     </Drawer.Navigator>
  );
 
  if (user.rol == 'Paciente')
  return(
  <Drawer.Navigator screenOptions={{headerShown: true}}>
-     <Drawer.Screen name="news" component={News}    options={{ title: 'Inicio' }}/>
      <Drawer.Screen  name="paciente" component={Paciente}   options={{ title: 'Consultas' }}/>
      <Drawer.Screen  name="perfil" component={Perfil}   options={{ title: 'Perfil de usuario' }}/>
+     <Drawer.Screen  name="chat" component={ChatStackNavigator}   options={{ title: 'Chat' }}/>
  </Drawer.Navigator>
 );
 

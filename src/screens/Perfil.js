@@ -2,7 +2,6 @@
 import React ,{useCallback} from 'react';
 import { FlatList,StyleSheet} from 'react-native';
 import {BASE_URL} from '../config';
-import {useGet} from '../hooks/userPetitions';
 import {PerfilComponent} from '../components/Perfil';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -33,10 +32,10 @@ export default function Perfil({navigation}) {
 
     React.useEffect( ()=>{
         navigation.setOptions({
-            headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout()}}/>,
+          headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout(user.id, user.token)}}/>,
             headerLeft: () => <HeaderIconButton name={'menu'} onPress={()=>{navigation.openDrawer()}} /> });
             fetchData();
-    }, [navigation, logout, user.id, fetchData] );
+    }, [navigation, logout, user.id, fetchData, user.token] );
  
 
   function renderProduct({item: perfil}) {

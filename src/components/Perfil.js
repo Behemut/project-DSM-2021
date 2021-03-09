@@ -12,7 +12,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import FormData from 'form-data';
 import axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
-
+import {sleep} from '../utils/sleep';
 
 export function PerfilComponent({usuario, onPress, props}) {
     const [nombre, setNombre] = React.useState(null);
@@ -76,9 +76,10 @@ export function PerfilComponent({usuario, onPress, props}) {
         <IconButton name={'image'} style={styles.icons} onPress={()=>{imageGalleryLaunch()}}  />
         </View>
         <Error error={error}/>
-        <FilledButton title={'Actualizar datos'} style={styles.loginButton}  onPress={async()=>{
+        <FilledButton title={'Actualizar datos'} style={styles.loginButton}  onPress={ async()=>{
          try {
             setLoading(true);
+            await sleep(1500);
             const data = new FormData();
             const avatar = new FormData();
             data.append('Nombre', nombre);
@@ -142,6 +143,7 @@ export function PerfilComponent({usuario, onPress, props}) {
 const styles = StyleSheet.create({
   card: {
     marginVertical: 5,
+    height: '100%',
     flex: 1,
   },
   thumb: {

@@ -8,7 +8,6 @@ import {StyleSheet, StatusBar } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AuthStackNavigator} from './src/navigation/AuthStackNavigator';
-import {MainStackNavigator} from './src/navigation/MainStackNavigator';
 import {MainDrawerNavigator} from './src/navigation/MainDrawNavigator';
 import {darkTheme} from './src/themes/dark';
 import {lightTheme} from './src/themes/light';

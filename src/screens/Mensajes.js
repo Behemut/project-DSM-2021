@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback,useState, useEffect} from 'react';
-import { StyleSheet, Alert, Modal, View, Text, Button, TextInput,ScrollView} from 'react-native';
+import { StyleSheet, Alert, Modal, View, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
 import {BASE_URL} from '../config';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -13,13 +13,13 @@ import {IconButton} from '../components/IconButton';
 import FormData from 'form-data';
 import {useGet}    from '../hooks/useGet';
 
+import {useTheme} from '@react-navigation/native';
 
-
-export default function Mensajes({navigation, route}) {
+export default function Mensajes({navigation, route,style}) {
 
 
    
-
+    const {colors} = useTheme();
 
     const [trigger, setTrigger] = React.useState(false);
     const { from, to } = route.params;
@@ -96,6 +96,10 @@ export default function Mensajes({navigation, route}) {
 
   useEffect(()=>{ 
             fetchData();
+
+            return()=>{
+            
+            }
     },[fetchData,trigger]);
 
     if (idroom!=null)
@@ -111,7 +115,8 @@ export default function Mensajes({navigation, route}) {
           value={mensaje}
           onChangeText={setMensaje}
         />
-        <IconButton name={'send'} style={styles.icons} onPress={()=>{
+        
+      <TouchableOpacity onPress={()=>{
                 try{
                       crearMensaje();
                       setMensaje(null);
@@ -120,12 +125,20 @@ export default function Mensajes({navigation, route}) {
                 }
                 catch(error){
                     console.log(error.message);
-                }
+                }}}>
+        <View style={[styles.buttonContainer, style, {color: colors.text}]}>
+        <IconButton name={'send'} />
+        </View>
+      </TouchableOpacity>
 
-        }}  />
+
+
+
+
         </View>
 </ScrollView>
 </View>
+
       );
 else 
 return(
@@ -135,7 +148,6 @@ return(
 )
     }
 
-
     const styles = StyleSheet.create({
         container: {
           flexDirection: 'row',
@@ -143,6 +155,7 @@ return(
           margin: 10,
           alignItems: 'flex-end',
         },
+      
         mainContainer: {
           flexDirection: 'row',
           backgroundColor: 'white',
@@ -160,7 +173,7 @@ return(
           marginHorizontal: 5,
         },
         buttonContainer: {
-          backgroundColor: Colors.light.tint,
+          //backgroundColor: Colors.light.tint,
           borderRadius: 25,
           width: 50,
           height: 50,

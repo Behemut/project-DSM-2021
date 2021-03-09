@@ -22,7 +22,7 @@ React.useEffect(()=>{
 
             return(
                 <ChatStack.Navigator   screenOptions={{headerShown: false}}>
-                <ChatStack.Screen name={'inicio'} component={Chat} />
+                <ChatStack.Screen  name={'inicio'} component={Chat} />
                 <ChatStack.Screen name={'mensajes'} component={Mensajes} />
                 <ChatStack.Screen name={'pacientes'} component={Pacientes} />
                 </ChatStack.Navigator>

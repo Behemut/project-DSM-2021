@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback,useState, useEffect} from 'react';
-import { StyleSheet, Alert, Modal, View, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
+import { StyleSheet, Alert, Modal, View, Text, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
 import {BASE_URL} from '../config';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -26,33 +26,52 @@ export default function Mensajes({navigation, route,style}) {
     const user = React.useContext(UserContext);
     const {logout} = React.useContext(AuthContext);
     const [mensajes, setMensajes] = React.useState(null);
-    const [mensaje, setMensaje] = React.useState(null);
+    const [contenido, setContenido] = React.useState(null);
     const [idroom, setIdroom] = React.useState(null);
     const url = `${BASE_URL}/rooms?_where[0][miembros.id]=${user.id}&_where[1][miembros.id]=${to.usuario.id}`;
     const [modalVisible, setModalVisible] = useState(false);
 
   //const url = `${BASE_URL}/rooms?_where[0][miembros.id]=604452a57e70a41ef48ce204&_where[1][miembros.id]=604547876188b149e840d9a0`;
-  const fetchData = useCallback ( async () => {
-      const result =  axios.get(url,{
+  const fetchData = useCallback (async  () => {
+      const result = await axios.get(url,{
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${user.token}`,
         }},
       )
-      .then((res)=>(setMensajes(res.data)))
+      .then(({data})=>{
+          setIdroom(data[0].id);
+       //   setMensajes(data)
+      })
       .catch((error)=>{
         console.log(error.message);
       });
-      map(mensajes,(data)=>(setIdroom(data.id)));
     },
-    [mensajes, url, user.token],
+    [url, user.token],
   );
 
+
+  const fetchMensajes = useCallback ( async () => {
+    const result = await axios.get(`${BASE_URL}/mensajes?_where[room.id]=${idroom}`,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${user.token}`,
+      }},
+    )
+    .then(({data})=>{
+          setMensajes(data);
+    })
+    .catch((error)=>{
+      console.log(error.message);
+    });
+  },
+  [idroom, user.token],
+);
 
     const crearMensaje = useCallback ( async ()=>{
      try{ const data = new FormData();
       const formulario={
-          texto: mensaje,
+          texto: contenido,
           from: user.id,
           to: to.usuario.id,
           room: idroom,
@@ -70,7 +89,7 @@ export default function Mensajes({navigation, route,style}) {
       } catch(error){
           console.log(error.message);
       }   
-    },[idroom, mensaje, to.usuario.id, user.id, user.token])
+    },[contenido, idroom, to.usuario.id, user.id, user.token])
 
 
   const crearSesion = useCallback ( async () => {
@@ -96,73 +115,68 @@ export default function Mensajes({navigation, route,style}) {
 
   useEffect(()=>{ 
             fetchData();
+            fetchMensajes();
+            return()=>{ };
+    },[fetchData, fetchMensajes, idroom]);
 
-            return()=>{
-            
-            }
-    },[fetchData,trigger]);
-
-    if (idroom!=null)
+if (idroom!=null || idroom!=undefined){
     return (
+
+
 <View style={styles.container} >
-<ScrollView style={styles.scrollview}>
-{map(mensajes,(data)=>(map(data.chats, (item)=>(<MensajesComponent key={item.id} item={item}  />))))}
+        <ScrollView  showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}  style={styles.scrollview}  >
+        {map(mensajes,(data)=>(<MensajesComponent key={data.id}  item={data} />))}
+        </ScrollView>
+
       <View style={styles.mainContainer}>
         <TextInput
           placeholder={'Escribir un mensaje...'}
           style={styles.textInput}
           multiline
-          value={mensaje}
-          onChangeText={setMensaje}
+          value={contenido}
+          onChangeText={setContenido}
         />
-        
-      <TouchableOpacity onPress={()=>{
+        <View style={[styles.buttonContainer, style, {color: colors.text}]}>
+        <IconButton name={'send'}  onPress={()=>{
                 try{
                       crearMensaje();
-                      setMensaje(null);
-                      setTrigger(!trigger);
-                      fetchData();
+                      setContenido(null);
                 }
                 catch(error){
                     console.log(error.message);
-                }}}>
-        <View style={[styles.buttonContainer, style, {color: colors.text}]}>
-        <IconButton name={'send'} />
+                }; fetchMensajes();
+                }}/>
+        <IconButton name={'refresh'}  onPress={()=>{
+                try{
+                  
+                    fetchMensajes();
+                }
+                catch(error){
+                    console.log(error.message);
+                }}}/>
+             </View>
         </View>
-      </TouchableOpacity>
-
-
-
-
-
-        </View>
-</ScrollView>
-</View>
-
-      );
-else 
-return(
-  <View style={styles.centeredView}>
- <Button title={'iniciar conversacion'}  onPress={()=>crearSesion()}/>
     </View>
-)
+      );    }
+    else
+    return(
+      <>
+      <Button title={'Crear una conversacion'} onPress={()=>crearSesion()}/>
+      </>
+    )
+
+
     }
 
     const styles = StyleSheet.create({
         container: {
-          flexDirection: 'row',
+          flexDirection: 'column',
           flex: 1,
-          margin: 10,
-          alignItems: 'flex-end',
         },
-      
         mainContainer: {
           flexDirection: 'row',
-          backgroundColor: 'white',
           padding: 10,
           borderRadius: 25,
-          marginRight: 10,
-          flex: 1,
           alignItems: 'flex-end',
         },
         textInput: {
@@ -179,5 +193,9 @@ return(
           height: 50,
           justifyContent: 'center',
           alignItems: 'center',
+        },
+        scrollview:{
+          flex: 1,
+          width: '100%',
         }
       })

@@ -35,6 +35,7 @@ export default function Perfil({navigation}) {
           headerRight: ()=> <HeaderIconButton  name={'log-out'} onPress={async  ()=>{await logout(user.id, user.token)}}/>,
             headerLeft: () => <HeaderIconButton name={'menu'} onPress={()=>{navigation.openDrawer()}} /> });
             fetchData();
+            return()=>{}
     }, [navigation, logout, user.id, fetchData, user.token] );
  
 
@@ -46,6 +47,8 @@ export default function Perfil({navigation}) {
     <FlatList
       contentContainerStyle={styles.productsListContainer}
       data={perfil}
+      showsVerticalScrollIndicator={false} 
+      showsHorizontalScrollIndicator={false}
       renderItem={renderProduct}
       keyExtractor={perfil => `${perfil.id}`}
     />

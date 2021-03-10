@@ -48,6 +48,8 @@ export default function Chat({navigation}) {
     <FlatList
       contentContainerStyle={styles.productsListContainer}
       data={usuarios}
+      showsVerticalScrollIndicator={false} 
+      showsHorizontalScrollIndicator={false}
       renderItem={renderProduct}
       keyExtractor={usuarios => `${usuarios.id}`}
     />

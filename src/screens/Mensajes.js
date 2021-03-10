@@ -12,16 +12,12 @@ import Colors from '../utils/Color';
 import {IconButton} from '../components/IconButton';
 import FormData from 'form-data';
 import {useGet}    from '../hooks/useGet';
-
+import AutoScroll from 'react-native-auto-scroll'
 import {useTheme} from '@react-navigation/native';
 
 export default function Mensajes({navigation, route,style}) {
 
-
-   
     const {colors} = useTheme();
-
-    const [trigger, setTrigger] = React.useState(false);
     const { from, to } = route.params;
     const user = React.useContext(UserContext);
     const {logout} = React.useContext(AuthContext);
@@ -41,7 +37,7 @@ export default function Mensajes({navigation, route,style}) {
       )
       .then(({data})=>{
           setIdroom(data[0].id);
-       //   setMensajes(data)
+
       })
       .catch((error)=>{
         console.log(error.message);
@@ -88,8 +84,10 @@ export default function Mensajes({navigation, route,style}) {
         })
       } catch(error){
           console.log(error.message);
-      }   
-    },[contenido, idroom, to.usuario.id, user.id, user.token])
+      }  
+      fetchMensajes();
+      
+    },[contenido, fetchMensajes, idroom, to.usuario.id, user.id, user.token])
 
 
   const crearSesion = useCallback ( async () => {
@@ -104,13 +102,12 @@ export default function Mensajes({navigation, route,style}) {
             },
           })
           setIdroom(result.data.id); 
-          console.log(idroom);
       }
       catch(error){
         console.log(error.message);
       }
   },
-  [idroom, to.usuario.id, user.id, user.token],
+  [to.usuario.id, user.id, user.token],
 );
 
   useEffect(()=>{ 
@@ -121,12 +118,10 @@ export default function Mensajes({navigation, route,style}) {
 
 if (idroom!=null || idroom!=undefined){
     return (
-
-
 <View style={styles.container} >
-        <ScrollView  showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}  style={styles.scrollview}  >
+<AutoScroll  showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}  style={styles.scrollview}  >
         {map(mensajes,(data)=>(<MensajesComponent key={data.id}  item={data} />))}
-        </ScrollView>
+        </AutoScroll>
 
       <View style={styles.mainContainer}>
         <TextInput
@@ -187,7 +182,7 @@ if (idroom!=null || idroom!=undefined){
           marginHorizontal: 5,
         },
         buttonContainer: {
-          //backgroundColor: Colors.light.tint,
+         
           borderRadius: 25,
           width: 50,
           height: 50,

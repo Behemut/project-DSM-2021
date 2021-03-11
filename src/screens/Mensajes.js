@@ -136,7 +136,7 @@ if (idroom!=null || idroom!=undefined){
           onRefresh={onRefresh}
         />
       }  >
-        {map(mensajes,(data)=>(<MensajesComponent key={data.id}  item={data} />))}
+        {map(mensajes,(data)=>(<MensajesComponent key={data.id} fetchMensajes={fetchMensajes} item={data} />))}
 </AutoScroll >
 
       <View style={styles.mainContainer}>

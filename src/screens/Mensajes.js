@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback,useState, useEffect} from 'react';
-import { StyleSheet, Alert, Modal, View, Text, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
+import { RefreshControl, StyleSheet, Alert, Modal, View, Text, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
 import {BASE_URL} from '../config';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -16,6 +16,17 @@ import AutoScroll from 'react-native-auto-scroll'
 import {useTheme} from '@react-navigation/native';
 
 export default function Mensajes({navigation, route,style}) {
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    wait(2000).then(() => setRefreshing(false));
+  }, [fetchData]);
+
+
 
     const {colors} = useTheme();
     const { from, to } = route.params;
@@ -119,9 +130,14 @@ export default function Mensajes({navigation, route,style}) {
 if (idroom!=null || idroom!=undefined){
     return (
 <View style={styles.container} >
-<AutoScroll  showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}  style={styles.scrollview}  >
+<AutoScroll  showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}  style={styles.scrollview}   refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }  >
         {map(mensajes,(data)=>(<MensajesComponent key={data.id}  item={data} />))}
-        </AutoScroll>
+</AutoScroll >
 
       <View style={styles.mainContainer}>
         <TextInput

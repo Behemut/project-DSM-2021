@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback} from 'react';
-import { FlatList,StyleSheet} from 'react-native';
+import {RefreshControl, FlatList,StyleSheet} from 'react-native';
 import {BASE_URL} from '../config';
 import {PerfilComponent} from '../components/Perfil';
 import {HeaderIconButton} from '../components/HeaderIconButton';
@@ -10,6 +10,16 @@ import axios from 'axios';
 
 
 export default function Perfil({navigation}) {
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    wait(2000).then(() => setRefreshing(false));
+  }, [fetchData]);
+
     const user = React.useContext(UserContext);
     const {logout} = React.useContext(AuthContext);
     const [perfil, setPerfil] = React.useState(null);
@@ -50,6 +60,12 @@ export default function Perfil({navigation}) {
       showsVerticalScrollIndicator={false} 
       showsHorizontalScrollIndicator={false}
       renderItem={renderProduct}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
       keyExtractor={perfil => `${perfil.id}`}
     />
   );

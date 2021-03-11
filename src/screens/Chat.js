@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback} from 'react';
-import {FlatList ,StyleSheet, Text, Pressable} from 'react-native';
+import {RefreshControl,FlatList ,StyleSheet, Text, Pressable} from 'react-native';
 import {BASE_URL} from '../config';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -9,6 +9,20 @@ import axios from 'axios';
 import {ChatComponent} from '../components/ChatComponent'
 
 export default function Chat({navigation}) {
+
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    wait(2000).then(() => setRefreshing(false));
+  }, [fetchData]);
+
+
+
     const user = React.useContext(UserContext);
     const {logout} = React.useContext(AuthContext);
     const [usuarios, setUsuarios] = React.useState(null);
@@ -39,12 +53,7 @@ export default function Chat({navigation}) {
 
 
   return (
-    <>
-      <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => fetchData()}>
-              <Text style={styles.textStyle}>Actualizar lista de usuarios</Text>
-            </Pressable>
+    
     <FlatList
       contentContainerStyle={styles.productsListContainer}
       data={usuarios}
@@ -52,8 +61,14 @@ export default function Chat({navigation}) {
       showsHorizontalScrollIndicator={false}
       renderItem={renderProduct}
       keyExtractor={usuarios => `${usuarios.id}`}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
     />
-    </>
+    
   );
 }
 

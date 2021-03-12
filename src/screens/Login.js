@@ -19,12 +19,13 @@ export function Login({navigation}){
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [error, setError] = React.useState(null);
+
 
   
 return(
  <AuthContainer>
-  <Heading style={styles.title}>LOGIN</Heading>
+  <Heading style={styles.title}>Inicio de sesión</Heading>
       <Error error={error} />
    <Input
         style={styles.input}

@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View, PermissionsAndroid} from 'react-native';
 import {Input} from './Input';
 import {FilledButton} from './FilledButton';
 import {IconButton} from './IconButton';
 import {Error} from './Error';
 import {BASE_URL} from '../config';
-import {Card} from './Card';
+
 import {Loading} from './Loading';
 import * as ImagePicker from 'react-native-image-picker';
 import FormData from 'form-data';
@@ -20,7 +20,7 @@ export function PerfilComponent({usuario, onPress, props}) {
     const [password, setPassword] = React.useState(null);
     const [file, setFile] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState('');
+    const [error, setError] = React.useState(null);
     const user = React.useContext(UserContext);
 
 
@@ -29,6 +29,32 @@ export function PerfilComponent({usuario, onPress, props}) {
         setNombre(usuario.usuario.Nombre);
         setEmail(usuario.usuario.username);
         },[usuario.usuario.Nombre, usuario.usuario.username]);
+
+
+        const requestCameraPermission = async () => {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.CAMERA,
+              {
+                title: "Se necesitan permisos para la cámara ",
+                message:
+                  "Consultas Médicas necesita permisos para poder acceder a tu cámara",
+                buttonNeutral: "Preguntar más tarde",
+                buttonNegative: (<Error error={'Permiso denegado'}/>),
+                buttonPositive: "OK"
+              }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    CameraLaunch();
+            } else {
+              <Error error={'Permiso denegado'}/>
+            }
+          } catch (err) {
+            <Error error={err.message}/>
+          }
+        };
+
+
 
     const imageGalleryLaunch = () => {
         let options = {
@@ -40,8 +66,6 @@ export function PerfilComponent({usuario, onPress, props}) {
         ImagePicker.launchImageLibrary(options, (res) => {
             if (res.didCancel) {
               setFile(null);
-            } else if (res.error) {
-              setError(error);
             } else {
             setFile(res );
             }
@@ -57,8 +81,6 @@ export function PerfilComponent({usuario, onPress, props}) {
         ImagePicker.launchCamera(options, (res) => {
             if (res.didCancel) {
                 setFile(null);
-              } else if (res.error) {
-                setError(error);
               } else {
               setFile(res );
               }
@@ -72,7 +94,7 @@ export function PerfilComponent({usuario, onPress, props}) {
         <Input style={styles.infoContainer}   placeholder={'Correo electronico'} keyboardType={'email-address'} value={email}  onChangeText={setEmail}/>
         <Input style={styles.infoContainer}   placeholder={'Contraseña'} secureTextEntry  onChangeText={setPassword}/>
         <View style={styles.flexContainer}>
-        <IconButton name={'camera'} style={styles.icons} onPress={()=>{CameraLaunch()}}  />
+        <IconButton name={'camera'} style={styles.icons} onPress={()=>{requestCameraPermission()}}  />
         <IconButton name={'image'} style={styles.icons} onPress={()=>{imageGalleryLaunch()}}  />
         </View>
         <Error error={error}/>
@@ -141,19 +163,12 @@ export function PerfilComponent({usuario, onPress, props}) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    marginVertical: 5,
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    
-  },
   thumb: {
-    height: 260,
-    width: 260,
-    borderRadius: 260/2,
+  height: 260,
+  width: 260,
+  borderRadius: 260/2,
   backgroundColor: 'gray',
-    marginLeft: 50,
+
   },
   infoContainer: {
      marginTop: 5,
@@ -161,6 +176,8 @@ const styles = StyleSheet.create({
     padding: 16,
     alignContent: 'center',
     flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '100%',
     height: '100%'
   },

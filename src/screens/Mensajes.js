@@ -12,21 +12,21 @@ import Colors from '../utils/Color';
 import {IconButton} from '../components/IconButton';
 import FormData from 'form-data';
 import {useGet}    from '../hooks/useGet';
-import AutoScroll from 'react-native-auto-scroll'
+import AutoScroll from 'react-native-auto-scroll';
 import {useTheme} from '@react-navigation/native';
-
+import { sleep } from '../utils/sleep';
+import {Error}  from '../components/Error';
 
 
 
 export default function Mensajes({navigation, route,style}) {
-  const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
   const [refreshing, setRefreshing] = React.useState(false);
+
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchData();
-    wait(2000).then(() => setRefreshing(false));
+    sleep(2000).then(() => setRefreshing(false));
   }, [fetchData]);
 
 
@@ -39,7 +39,7 @@ export default function Mensajes({navigation, route,style}) {
     const [idroom, setIdroom] = React.useState(null);
     const url = `${BASE_URL}/rooms?_where[0][miembros.id]=${user.id}&_where[1][miembros.id]=${to.usuario.id}`;
     const [modalVisible, setModalVisible] = useState(false);
-
+    const [error, setError] = React.useState(null);
     
   //const url = `${BASE_URL}/rooms?_where[0][miembros.id]=604452a57e70a41ef48ce204&_where[1][miembros.id]=604547876188b149e840d9a0`;
   const fetchData = useCallback (async  () => {
@@ -51,11 +51,8 @@ export default function Mensajes({navigation, route,style}) {
       )
       .then(({data})=>{
           setIdroom(data[0].id);
-
       })
-      .catch((error)=>{
-        console.log(error.message);
-      });
+      .catch((error)=>{});
     },
     [url, user.token],
   );
@@ -72,7 +69,7 @@ export default function Mensajes({navigation, route,style}) {
           setMensajes(data);
     })
     .catch((error)=>{
-      console.log(error.message);
+      setError(error.message);
     });
   },
   [idroom, user.token],
@@ -97,7 +94,7 @@ export default function Mensajes({navigation, route,style}) {
             },
         })
       } catch(error){
-  
+        setError(error.message);
       }  
       fetchMensajes();
       
@@ -118,7 +115,7 @@ export default function Mensajes({navigation, route,style}) {
           setIdroom(result.data.id); 
       }
       catch(error){
-        console.log(error.message);
+        setError(error.message);
       }
   },
   [to.usuario.id, user.id, user.token],
@@ -168,7 +165,9 @@ if (idroom!=null || idroom!=undefined){
                 catch(error){
                     console.log(error.message);
                 }}}/>
+                   <Error error={error} />
              </View>
+          
         </View>
     </View>
       );    }

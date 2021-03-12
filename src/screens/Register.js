@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {Heading}  from '../components/Heading';
 import { Input}  from '../components/Input';
 import { FilledButton}  from '../components/FilledButton';
@@ -21,7 +21,7 @@ export function Register({navigation}){
   const [rol, setRol] = React.useState(null);
   const [files, setFiles] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [error, setError] = React.useState(null);
 
   const imageGalleryLaunch = () => {
     let options = {
@@ -36,10 +36,12 @@ export function Register({navigation}){
   }
 
   return(
-  <ScrollView>
+  <ScrollView  showsVerticalScrollIndicator={false}   showsHorizontalScrollIndicator={false}>
   <AuthContainer>
-  <IconButton name={'close-circle-outline'} style={styles.closeIcon} onPress={() => {navigation.pop();}}  />
-  <Heading style={styles.title}>REGISTRAR USUARIO</Heading>
+  <TouchableOpacity  style={styles.closeIcon}>
+  <IconButton name={'close'} onPress={()=>navigation.pop()}/>
+  </TouchableOpacity>
+  <Heading style={styles.title}>Crear un usuario</Heading>
    <Error error={error} />
    <Input
         style={styles.input}
@@ -59,11 +61,12 @@ export function Register({navigation}){
         onChangeText={setPassword}
       />
   <RNPickerSelect
-   style={styles.input}
         placeholder={{
           label: 'Seleccione su Rol',
           value: null,
         }}
+        useNativeAndroidPickerStyle={false}
+        style={picketSelectStyles}
             onValueChange={(value) => setRol(value)}
             items={[
                 { label: 'Doctor', value: 'Doctor' },
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
     top: 60,
     right: 16,
   },
+
 });
 
 const picketSelectStyles = StyleSheet.create({
@@ -125,16 +129,14 @@ const picketSelectStyles = StyleSheet.create({
     backgroundColor: '#e8e8e8',
     marginLeft: -5,
     marginRight: -5,
+    width: '100%',
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'grey',
+    backgroundColor: '#e8e8e8',
+    width: 300,
+    padding: 20,
     borderRadius: 8,
     color: 'black',
-    paddingRight: 30,
-    backgroundColor: '#e8e8e8',
+
   },
 });

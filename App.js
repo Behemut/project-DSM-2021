@@ -46,7 +46,6 @@ return(
 <AuthContext.Provider value={auth}>
 <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
   <NavigationContainer theme={lightTheme}>
-
     <RootStack.Navigator  screenOptions={{headerShown: false}}>
     {renderScreens()}
     </RootStack.Navigator>

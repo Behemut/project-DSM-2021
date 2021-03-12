@@ -18,6 +18,9 @@ import {SplashScreen} from './src/screens/SplashScreen';
 
 const RootStack = createStackNavigator();
 
+
+
+
 export default function App(){
 
 
@@ -43,6 +46,7 @@ return(
 <AuthContext.Provider value={auth}>
 <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
   <NavigationContainer theme={lightTheme}>
+
     <RootStack.Navigator  screenOptions={{headerShown: false}}>
     {renderScreens()}
     </RootStack.Navigator>

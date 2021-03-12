@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React ,{useCallback,useState, useEffect} from 'react';
-import { RefreshControl, StyleSheet, Alert, Modal, View, Text, ImageBackground,TouchableOpacity ,Button, TextInput,ScrollView} from 'react-native';
+import { RefreshControl, StyleSheet, Alert, Modal, View, Text, ImageBackground,Dimensions ,Button, TextInput,ScrollView} from 'react-native';
 import {BASE_URL} from '../config';
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
@@ -14,6 +14,9 @@ import FormData from 'form-data';
 import {useGet}    from '../hooks/useGet';
 import AutoScroll from 'react-native-auto-scroll'
 import {useTheme} from '@react-navigation/native';
+
+
+
 
 export default function Mensajes({navigation, route,style}) {
   const wait = (timeout) => {
@@ -31,13 +34,13 @@ export default function Mensajes({navigation, route,style}) {
     const {colors} = useTheme();
     const { from, to } = route.params;
     const user = React.useContext(UserContext);
-    const {logout} = React.useContext(AuthContext);
     const [mensajes, setMensajes] = React.useState(null);
     const [contenido, setContenido] = React.useState(null);
     const [idroom, setIdroom] = React.useState(null);
     const url = `${BASE_URL}/rooms?_where[0][miembros.id]=${user.id}&_where[1][miembros.id]=${to.usuario.id}`;
     const [modalVisible, setModalVisible] = useState(false);
 
+    
   //const url = `${BASE_URL}/rooms?_where[0][miembros.id]=604452a57e70a41ef48ce204&_where[1][miembros.id]=604547876188b149e840d9a0`;
   const fetchData = useCallback (async  () => {
       const result = await axios.get(url,{
@@ -94,7 +97,7 @@ export default function Mensajes({navigation, route,style}) {
             },
         })
       } catch(error){
-          console.log(error.message);
+  
       }  
       fetchMensajes();
       
@@ -136,7 +139,7 @@ if (idroom!=null || idroom!=undefined){
           onRefresh={onRefresh}
         />
       }  >
-        {map(mensajes,(data)=>(<MensajesComponent key={data.id} fetchMensajes={fetchMensajes} item={data} />))}
+        {map(mensajes,(data)=>(<MensajesComponent  imagento={to.profilepic.url} key={data.id} fetchMensajes={fetchMensajes} item={data} />))}
 </AutoScroll >
 
       <View style={styles.mainContainer}>
@@ -183,6 +186,8 @@ if (idroom!=null || idroom!=undefined){
         container: {
           flexDirection: 'column',
           flex: 1,
+          width: Dimensions.get("window").width, //for full screen
+          height: Dimensions.get("window").height //for full screen
         },
         mainContainer: {
           flexDirection: 'row',
@@ -205,8 +210,14 @@ if (idroom!=null || idroom!=undefined){
           justifyContent: 'center',
           alignItems: 'center',
         },
-        scrollview:{
-          flex: 1,
-          width: '100%',
-        }
+        fixed: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
+        },
+       scrollview: {
+         backgroundColor: 'transparent'
+       }
       })

@@ -65,7 +65,7 @@ export function PerfilComponent({usuario, onPress, props}) {
         });
       };
   return (
-    <Card style={styles.card} onPress={onPress}>
+
       <View style={styles.infoContainer}>
         <Image style={styles.thumb} source={{uri: `${BASE_URL}${usuario.profilepic.url}`}}/>
         <Input style={styles.infoContainer}   placeholder={'Nombre completo'} value={nombre}  onChangeText={setNombre} />
@@ -134,26 +134,35 @@ export function PerfilComponent({usuario, onPress, props}) {
           setError(error.message);
          }
         }}/> 
-      </View>
+  
       <Loading loading={loading} />
-    </Card>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     marginVertical: 5,
-    height: '100%',
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    
   },
   thumb: {
     height: 260,
-    borderRadius: 50,
+    width: 260,
+    borderRadius: 260/2,
+  backgroundColor: 'gray',
+    marginLeft: 50,
   },
   infoContainer: {
      marginTop: 5,
      marginBottom: 5,
     padding: 16,
+    alignContent: 'center',
+    flex: 1,
+    width: '100%',
+    height: '100%'
   },
   loginButton: {
     marginVertical: 15,
@@ -165,6 +174,7 @@ const styles = StyleSheet.create({
    justifyContent: 'center',
   },
   icons:{
+    marginTop: 10,
     flex: 1,
     marginLeft: 40,
     fontSize: 40,

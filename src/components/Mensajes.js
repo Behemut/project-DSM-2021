@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React,{useState,useCallback} from 'react';
-import { StyleSheet, View, Text, TextInput ,Modal, Alert , Pressable} from 'react-native';
+import { StyleSheet, View, Text, TextInput ,Modal, Image , Pressable} from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import Colors from '../utils/Color';
 import moment from 'moment';
@@ -10,10 +10,9 @@ import axios from 'axios';
 import {BASE_URL} from '../config/index';
 
 
-export function MensajesComponent({item, fetchMensajes}) {
+export function MensajesComponent({item, fetchMensajes, imagento}) {
     const user = React.useContext(UserContext);
     const [modalVisible, setModalVisible] = useState(false);
-
     const isMyMessage = () => {
         return user.id === item.from.id;
       }
@@ -65,8 +64,10 @@ export function MensajesComponent({item, fetchMensajes}) {
       alignItems: isMyMessage()?  'flex-end': 'flex-start',
     }
   ]}>
-  
+    <View style={styles.to}>
+  {!isMyMessage()?   <Image style={styles.avatar} source={{uri: `${BASE_URL}${imagento}`}}/>: <></> }  
     <Text  style={styles.user}>{item.from.Nombre}</Text>
+    </View>
     <Text style={styles.message}>{item.texto}</Text>
     <Text style={styles.time}>{moment (item.createdAt).local(es).startOf().fromNow()}</Text>
   </View>
@@ -156,11 +157,12 @@ const modal = StyleSheet.create({
   },
 
   flexContainer:{
-    flexDirection: 'row',
-    
+    flexDirection: 'row', 
     alignContent: 'center',
    justifyContent: 'center',
   },
+
+
 });
 
 
@@ -190,6 +192,18 @@ const styles = StyleSheet.create({
       alignSelf: "flex-end",
       color: 'grey'
     },
- 
+    avatar: {
+      width: 40,
+      height: 40,
+      borderRadius: 40/ 2,
+      marginRight: 5,
+    },
+    to:{
+      flex: 1,
+      flexDirection: 'row',
+      alignContent: 'center',
+     justifyContent: 'center',
+     marginBottom: 5,
+    }
   });
   

@@ -35,7 +35,8 @@
     "react-native-secure-storage": "^0.1.2",
     "react-native-toast-message": "^1.4.9",
     "react-native-vector-icons": "^8.0.0",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "socket.io-client": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",

@@ -39,7 +39,7 @@ export function ChatComponent({navigation,usuario}) {
               >  
     <View style={styles.container}>
       <View style={styles.lefContainer}>
-      <Image style={styles.avatar} source={{uri: `${BASE_URL}${usuario.profilepic.url}`}}/>
+      <Image style={styles.avatar} source={{uri: `${usuario.profilepic.url}`}}/>
         <View style={styles.midContainer}>
         <Text style={styles.username}>{nombre}</Text>
         <Text style={styles.status}>{(usuario.usuario.estado)? 'En linea': 'Fuera de linea' }</Text>
@@ -58,7 +58,7 @@ onRequestClose={() => {
 >
 <View style={modal.infoContainer}>
 <Text style={modal.username}>{nombre}</Text>
-        <Image style={modal.thumb} source={{uri: `${BASE_URL}${usuario.profilepic.url}`}}/>
+        <Image style={modal.thumb} source={{uri: `${usuario.profilepic.url}`}}/>
         <Text style={modal.username}>{usuario.usuario.rol}</Text>
         <Text style={modal.texto}>Cargo: Psiquitria</Text>
         <Text style={modal.texto}>Número telefonico: 2222-4445</Text>

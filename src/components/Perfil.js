@@ -89,7 +89,7 @@ export function PerfilComponent({usuario, onPress, props}) {
   return (
 
       <View style={styles.infoContainer}>
-        <Image style={styles.thumb} source={{uri: `${BASE_URL}${usuario.profilepic.url}`}}/>
+        <Image style={styles.thumb} source={{uri: `${usuario.profilepic.url}`}}/>
         <Input style={styles.infoContainer}   placeholder={'Nombre completo'} value={nombre}  onChangeText={setNombre} />
         <Input style={styles.infoContainer}   placeholder={'Correo electronico'} keyboardType={'email-address'} value={email}  onChangeText={setEmail}/>
         <Input style={styles.infoContainer}   placeholder={'Contraseña'} secureTextEntry  onChangeText={setPassword}/>

@@ -65,7 +65,7 @@ export function MensajesComponent({item, fetchMensajes, imagento}) {
     }
   ]}>
     <View style={styles.to}>
-  {!isMyMessage()?   <Image style={styles.avatar} source={{uri: `${BASE_URL}${imagento}`}}/>: <></> }  
+  {!isMyMessage()?   <Image style={styles.avatar} source={{uri: `${imagento}`}}/>: <></> }  
     <Text  style={styles.user}>{item.from.Nombre}</Text>
     </View>
     <Text style={styles.message}>{item.texto}</Text>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "347417400145",
+    "firebase_url": "https://android-dsm-default-rtdb.firebaseio.com",
+    "project_id": "android-dsm",
+    "storage_bucket": "android-dsm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347417400145:android:b7c52bf4f6af645cbf7970",
+        "android_client_info": {
+          "package_name": "com.consultasmedicas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347417400145-n4mp97fdhimvn95ngsk8uir5dah2qpfj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.consultasmedicas",
+            "certificate_hash": "14040957ab32ad92d5590bb44e0d94f3bbb9dc4a"
+          }
+        },
+        {
+          "client_id": "347417400145-r2l5eg6uiiu94tntus7ckeuslu548dd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-1xnNCudJYAKDaa-DGLGiZB4V0k6vbtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347417400145-r2l5eg6uiiu94tntus7ckeuslu548dd5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

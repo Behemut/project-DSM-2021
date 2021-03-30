@@ -32,10 +32,7 @@ export function MensajesComponent({item, fetchMensajes, imagento}) {
           }
       catch(error){
         console.log(error.message);
-      }
-
-
-      }
+      }}
 
       return (
         <>

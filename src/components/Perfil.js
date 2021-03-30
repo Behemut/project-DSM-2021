@@ -40,17 +40,20 @@ export function PerfilComponent({usuario, onPress, props}) {
                 message:
                   "Consultas Médicas necesita permisos para poder acceder a tu cámara",
                 buttonNeutral: "Preguntar más tarde",
-                buttonNegative: (<Error error={'Permiso denegado'}/>),
+                buttonNegative: (setError("Permiso Denegado")),
                 buttonPositive: "OK"
               }
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     CameraLaunch();
             } else {
-              <Error error={'Permiso denegado'}/>
+             setError("Permiso Denegado");
+             sleep(1000);
+             setError(null);
             }
           } catch (err) {
-            <Error error={err.message}/>
+            sleep(1000);
+            setError(null);
           }
         };
 
@@ -154,6 +157,8 @@ export function PerfilComponent({usuario, onPress, props}) {
          } catch (error) {
           setLoading(false);
           setError(error.message);
+          sleep(1500);
+          setError(null);
          }
         }}/> 
   

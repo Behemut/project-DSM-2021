@@ -9,9 +9,8 @@ import {Error} from '../components/Error';
 
 import {AuthContainer} from '../components/AuthContainer';
 import {Loading} from '../components/Loading'
-import Toast from 'react-native-toast-message';
 import { AuthContext } from '../contexts/AuthContext';
-
+import {sleep} from '../utils/sleep'
 
 export function Login({navigation}){
  const {login} = React.useContext(AuthContext);
@@ -49,8 +48,9 @@ return(
            await login(email,password);
   
           } catch (error) {
-    
            setError(error.message);
+           sleep(1500);
+           setError(null);
            setLoading(false);
            
           }

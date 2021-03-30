@@ -29,7 +29,7 @@ export function MainDrawerNavigator({navigation}){
  if (user.rol == 'Paciente')
  return(
  <Drawer.Navigator screenOptions={{headerShown: true}}>
-     <Drawer.Screen  name="paciente" component={Paciente}   options={{ title: 'Consultas' , drawerIcon:({focused, size})=>(  <IconButton name={'home'} />) }}/>
+     <Drawer.Screen  name="paciente" component={Paciente}   options={{ title: 'Proximás Citas' , drawerIcon:({focused, size})=>(  <IconButton name={'home'} />) }}/>
      <Drawer.Screen  name={'crear'} component={CrearConsultas}   options={{ title: 'Crear consulta', drawerIcon:({focused, size})=>(  <IconButton name={'create'} />) }}/>
      <Drawer.Screen  name="perfil" component={Perfil}   options={{ title: 'Perfil de usuario' , drawerIcon:({focused, size})=>(  <IconButton name={'person'} />) }}/>
      <Drawer.Screen  name="chat" component={ChatStackNavigator}  options={{ title: 'Chat', drawerIcon:({focused, size})=>(  <IconButton name={'chatbubbles'} />) }}/>

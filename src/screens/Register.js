@@ -11,7 +11,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import {Loading} from '../components/Loading';
 import * as ImagePicker from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
-
+import {sleep}  from '../utils/sleep'
 export function Register({navigation}){
  
   const {register} = React.useContext(AuthContext);
@@ -89,6 +89,8 @@ export function Register({navigation}){
          } catch (error) {
           setLoading(false);
           setError(error.message);
+          sleep(1500);
+          setError(null);
          }
         }}/>
       <Loading loading={loading} />

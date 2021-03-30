@@ -14,7 +14,7 @@ import FormData from 'form-data';
 import {useGet}    from '../hooks/useGet';
 import AutoScroll from 'react-native-auto-scroll';
 import {useTheme} from '@react-navigation/native';
-import { sleep } from '../utils/sleep';
+import {sleep } from '../utils/sleep';
 import {Error}  from '../components/Error';
 
 
@@ -70,6 +70,8 @@ export default function Mensajes({navigation, route,style}) {
     })
     .catch((error)=>{
       setError(error.message);
+      sleep(1500);
+      setError(null);
     });
   },
   [idroom, user.token],
@@ -95,10 +97,12 @@ export default function Mensajes({navigation, route,style}) {
         })
       } catch(error){
         setError(error.message);
+        sleep(1500);
+        setError(null);
       }  
       fetchMensajes();
       
-    },[contenido, fetchMensajes, idroom, to.usuario.id, user.id, user.token])
+    },[contenido, fetchMensajes, idroom, to.usuario.id, user.id, user.token]);
 
 
   const crearSesion = useCallback ( async () => {
@@ -116,6 +120,8 @@ export default function Mensajes({navigation, route,style}) {
       }
       catch(error){
         setError(error.message);
+        sleep(1500);
+        setError(null);
       }
   },
   [to.usuario.id, user.id, user.token],
@@ -154,7 +160,9 @@ if (idroom!=null || idroom!=undefined){
                       setContenido(null);
                 }
                 catch(error){
-                    console.log(error.message);
+                  setError(error.message);
+                  sleep(1500);
+                  setError(null);
                 }; fetchMensajes();
                 }}/>
         <IconButton name={'refresh'}  onPress={()=>{
@@ -163,7 +171,9 @@ if (idroom!=null || idroom!=undefined){
                     fetchMensajes();
                 }
                 catch(error){
-                    console.log(error.message);
+                    setError(error.message);
+                    sleep(1500);
+                    setError(null);
                 }}}/>
                    <Error error={error} />
              </View>

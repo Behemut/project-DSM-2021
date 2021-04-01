@@ -6,7 +6,12 @@ import {createAction} from '../utils/createAction';
 import axios from 'axios';
 import SecureStorage from 'react-native-secure-storage'
 import { ActionSheetIOS } from 'react-native';
- 
+import {
+  GoogleSignin,
+  statusCodes,
+  GoogleSigninButton
+} from '@react-native-community/google-signin';
+
 export function useAuth(){
 const [avatarform, setAvatarform] = React.useState(null);
 const [state, dispach] =React.useReducer( (state,action)=>{
@@ -59,9 +64,79 @@ const [state, dispach] =React.useReducer( (state,action)=>{
     },
 });
 
-     await SecureStorage.setItem('user', JSON.stringify(user));
-     dispach(createAction( 'SET_USER',user));
+   await SecureStorage.setItem('user', JSON.stringify(user));
+   dispach(createAction( 'SET_USER',user));
    },
+
+   loginGoogle: async (idToken, Gusuario) =>{
+    await sleep(1500);
+    const { data } = await axios.get(`${BASE_URL}/auth/google/callback`, {
+      params: {
+        access_token: idToken,
+      },
+    });
+
+    const avatar = new FormData();
+    const inicio= new FormData();
+    // save the JWT token and user info in your app
+  
+     const user ={
+       id: data.user.id,
+       email: data.user.email,
+       rol: data.user.rol,
+       username: data.user.username,
+       token: data.jwt ,
+     };
+
+     let Gnombre= Gusuario.givenName + ' ' + Gusuario.familyName;
+  
+     inicio.append('estado', JSON.stringify(true));
+     inicio.append('Nombre', JSON.stringify(Gnombre));
+
+     const GusuarioId = {
+      'usuario': user.id,
+    };
+
+    await axios({
+    method: 'PUT',
+    url: `${BASE_URL}/users/${user.id}`,
+    data: inicio,
+    headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${user.token}`,
+    }});
+    
+    avatar.append('data', JSON.stringify(GusuarioId));
+    avatar.append('files.profilepic', {
+      uri: Gusuario.photo,
+      name: Gusuario.email,
+      type: 'image/jpeg',
+  });
+
+  let responseAvatar = await axios.get(`${BASE_URL}/avatars?_where[usuario]=${user.id}`, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${data.jwt}`,
+    },
+  });
+ 
+if (responseAvatar.headers['content-length']===2 || responseAvatar.headers['content-length']==='2' ){
+  await axios.post(`${BASE_URL}/avatars`, avatar, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${data.jwt}`,
+    },
+  });
+}
+
+
+   await SecureStorage.setItem('user', JSON.stringify(user));
+   dispach(createAction( 'SET_USER',user));
+   },
+
+
+
+
    logout : async (id,token) =>{
 
     const estado= new FormData();
@@ -77,6 +152,8 @@ const [state, dispach] =React.useReducer( (state,action)=>{
 });
    await SecureStorage.removeItem('user');
    await  dispach (createAction( 'REMOVE_USER'));
+
+   await GoogleSignin.signOut();
    },
    register :  async (nombre,email, password,rol,file) =>{
     const data = new FormData();

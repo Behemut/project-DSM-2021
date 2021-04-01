@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:347417400145:android:b7c52bf4f6af645cbf7970",
+        "mobilesdk_app_id": "1:347417400145:android:9d0e1426c38d6836bf7970",
         "android_client_info": {
           "package_name": "com.consultasmedicas"
         }
       },
       "oauth_client": [
         {
-          "client_id": "347417400145-n4mp97fdhimvn95ngsk8uir5dah2qpfj.apps.googleusercontent.com",
+          "client_id": "347417400145-884frf1m8c1vba53dgq3pj1h8ib5q1pc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.consultasmedicas",
-            "certificate_hash": "14040957ab32ad92d5590bb44e0d94f3bbb9dc4a"
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {

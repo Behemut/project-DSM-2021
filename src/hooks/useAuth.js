@@ -79,10 +79,10 @@ const [state, dispach] =React.useReducer( (state,action)=>{
     const avatar = new FormData();
     const inicio= new FormData();
     // save the JWT token and user info in your app
-  
+  console.log(Gusuario);
      const user ={
        id: data.user.id,
-       email: data.user.email,
+       email: Gusuario.email,
        rol: data.user.rol,
        username: data.user.username,
        token: data.jwt ,

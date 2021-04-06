@@ -14,6 +14,6 @@ Librerias utilizadas para el proyecto (FrontEnd  React Native)
 8. React Navigation    Mirar documentacion sobre instalacion:  https://reactnavigation.org/docs/getting-started
 9. React-native-secure-storage   https://www.npmjs.com/package/react-native-secure-storage
 10. React-native-picker-select https://www.npmjs.com/package/react-native-picker-select
-11.React Native DateTimePicker  https://www.npmjs.com/package/@react-native-community/datetimepicker
+11. React Native DateTimePicker  https://www.npmjs.com/package/@react-native-community/datetimepicker
 12. Google Signin    https://www.npmjs.com/package/@react-native-community/google-signin
 

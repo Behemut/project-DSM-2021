@@ -5,12 +5,15 @@ import moment from 'moment';
 import es from 'moment/locale/es';
 import {BASE_URL} from '../config';
 import {Card} from './Card';
+import { UserContext } from '../contexts/UserContext';
+
 
 export function PacienteComponente({consultas, onPress}) {
+  const user = React.useContext(UserContext);
 
+if (user.rol=="Paciente")
   return (
     <Card style={styles.card} onPress={onPress}>
-
       <View style={styles.infoContainer}>
       { consultas.estado? <View> 
           <Text style={styles.informacionAccepted}>Doctor: { consultas.doctor.Nombre}</Text>  
@@ -26,6 +29,27 @@ export function PacienteComponente({consultas, onPress}) {
       </View>
     </Card>
   );
+else
+return(
+  <Card style={styles.card} onPress={onPress}>
+  <View style={styles.infoContainer}>
+  { consultas.estado? <View> 
+      <Text style={styles.informacionAccepted}>Nombre de paciente: { consultas.paciente.Nombre}</Text>  
+      <Text style={styles.informacionAccepted}>Email de paciente: { consultas.paciente.email}</Text>  
+  </View>:  
+  <Text style={styles.informacionAlt}>Caso no ha sido aceptado</Text>}  
+    <Text style={styles.informacion}>Duración: {consultas.horas}</Text>
+    <Text style={styles.informacion}>Fecha y hora: {moment (consultas.fecha_cita).format("MMMM Do YYYY, h:mm:ss a")}</Text>
+    <Text style={styles.subinfo}>Descripcion: {consultas.descripcion}</Text>
+ 
+    <Text style={styles.subinfo}>Tiempo restante para la cita {moment (consultas.fecha_cita).local(es).startOf().fromNow()}</Text>
+
+  </View>
+</Card>
+);
+
+
+
 }
 
 const styles = StyleSheet.create({

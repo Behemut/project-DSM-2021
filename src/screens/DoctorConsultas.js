@@ -2,14 +2,14 @@
 import React ,{useCallback} from 'react';
 import {RefreshControl, FlatList,StyleSheet} from 'react-native';
 import {BASE_URL} from '../config';
-import {PacienteComponente} from '../components/PacienteComponente'
+import {DoctorComponente} from '../components/DoctorComponente'
 import {HeaderIconButton} from '../components/HeaderIconButton';
 import {AuthContext} from '../contexts/AuthContext';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 
 
-export default function Paciente({navigation}) {
+export default function DoctorConsultas({navigation}) {
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -26,17 +26,9 @@ export default function Paciente({navigation}) {
 
 //Usando CallBack se crea una funcion para llamar los datos del axios, sin romper la primera ley de React Hooks
     const fetchData = useCallback( async () => {
-      let  peticion="";
-
-      if (user.rol == 'Paciente')
-        peticion= `consultas?_where[paciente]=${user.id}&_sort=fecha_cita:ASC`;
-      else
-      peticion= `consultas?_where[doctor]=${user.id}&_sort=fecha_cita:ASC`;
-      
-      await axios.get(`${BASE_URL}/${peticion}`,
+        await axios.get(`${BASE_URL}/consultas?_where[estado]=false&_sort=fecha_cita:ASC`,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${user.token}`,
           }},
         )
@@ -44,7 +36,7 @@ export default function Paciente({navigation}) {
           setConsultas(res.data);
         });
       },
-      [user.id, user.rol, user.token],
+      [user.token],
     );
 
     React.useEffect( ()=>{
@@ -57,7 +49,7 @@ export default function Paciente({navigation}) {
  
 
   function renderProduct({item: consultas}) {
-    return <PacienteComponente consultas={consultas}/>;
+    return <DoctorComponente consultas={consultas} fetchData={fetchData}/>;
   }
 
   return (
